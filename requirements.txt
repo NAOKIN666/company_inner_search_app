@@ -13,6 +13,7 @@ click==8.2.1
 colorama==0.4.6
 dataclasses-json==0.6.7
 distro==1.9.0
+docx2txt==0.8
 frozenlist==1.7.0
 gitdb==4.0.12
 GitPython==3.1.45
@@ -56,6 +57,8 @@ pydantic-settings==2.10.1
 pydantic_core==2.33.2
 pydeck==0.9.1
 Pygments==2.19.2
+PyMuPDF==1.23.22
+PyMuPDFb==1.23.22
 python-dateutil==2.9.0.post0
 python-docx==1.2.0
 python-dotenv==1.1.1
