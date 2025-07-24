@@ -87,8 +87,8 @@ urllib3==2.5.0
 watchdog==6.0.0
 yarl==1.20.1
 zstandard==0.23.0
-unstructured[pdf,docx]==0.12.3
-pdfminer.six
-beautifulsoup4
-pypandoc
+unstructured==0.12.3
+pdfminer.six==20221105
+beautifulsoup4==4.12.3
+pypandoc==1.13
 # aaaaa
