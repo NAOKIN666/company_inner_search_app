@@ -57,7 +57,7 @@ pydantic-settings==2.10.1
 pydantic_core==2.33.2
 pydeck==0.9.1
 Pygments==2.19.2
-PyMuPDF==1.23.22
+PyMuPDF==1.22.5
 python-dateutil==2.9.0.post0
 python-docx==1.2.1
 python-dotenv==1.1.1
