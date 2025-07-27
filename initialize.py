@@ -168,7 +168,17 @@ def initialize_retriever():
     st.write(f"✅ final_docs の件数: {len(final_docs)}")
     st.write("📌 STEP 4-8: ベクターストアの作成")
     # ベクターストアの作成
-    db = Chroma.from_documents(final_docs, embedding=embeddings)
+    try:
+        db = Chroma.from_documents(
+            final_docs,
+            embedding=embeddings,
+            persist_directory="./tmp_chroma_test"  # 明示的に指定（任意）
+        )
+        st.write("✅ Chroma.from_documents 実行成功")
+    except Exception as e:
+        st.error("❌ ベクターストアの作成に失敗しました")
+        st.error(str(e))  # ← エラー詳細を表示
+        st.stop()
 
     st.write("📌 STEP 4-9: ベクターストアを検索するRetrieverの作成")
     # ベクターストアを検索するRetrieverの作成
