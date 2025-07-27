@@ -107,22 +107,27 @@ def initialize_retriever():
     """
     画面読み込み時にRAGのRetriever（ベクターストアから検索するオブジェクト）を作成
     """
+    st.write("📌 STEP 4-1: ロガーの読み込み")
     # ロガーを読み込むことで、後続の処理中に発生したエラーなどがログファイルに記録される
     logger = logging.getLogger(ct.LOGGER_NAME)
 
+    st.write("📌 STEP 4-2: 検索器あれば処理抜ける")
     # すでにRetrieverが作成済みの場合、後続の処理を中断
     if "retriever" in st.session_state:
         return
-    
+
+    st.write("📌 STEP 4-3: RAGの参照先となるデータソースの読み込み")
     # RAGの参照先となるデータソースの読み込み
     docs_all = load_data_sources()
 
+    st.write("📌 STEP 4-4: OSがWindowsの場合、Unicode正規化と、cp932（Windows用の文字コード）で表現できない文字を除去")
     # OSがWindowsの場合、Unicode正規化と、cp932（Windows用の文字コード）で表現できない文字を除去
     for doc in docs_all:
         doc.page_content = adjust_string(doc.page_content)
         for key in doc.metadata:
             doc.metadata[key] = adjust_string(doc.metadata[key])
 
+    st.write("📌 STEP 4-5: 埋め込みモデルの用意")
     # 埋め込みモデルの用意
     embeddings = OpenAIEmbeddings()
 
@@ -130,6 +135,7 @@ def initialize_retriever():
     csv_docs = []
     other_docs = []
 
+    st.write("📌 STEP 4-6: docs_all の中身を１つずつチェックして分類する")
     # docs_all の中身を１つずつチェックして分類する
     for doc in docs_all:
         # メタデータに含まれるファイルパスの拡張子で判定
@@ -145,15 +151,18 @@ def initialize_retriever():
         separator="\n"
     )
 
+    st.write("📌 STEP 4-7: チャンク分割を実施(CSV以外のドキュメント)")
     # チャンク分割を実施(CSV以外のドキュメント)
     splitted_other_docs = text_splitter.split_documents(other_docs)
 
     # 分割済みのドキュメントと、無加工のCSVドキュメントを結合して最終版とする
     final_docs = splitted_other_docs + csv_docs
 
+    st.write("📌 STEP 4-8: ベクターストアの作成")
     # ベクターストアの作成
     db = Chroma.from_documents(final_docs, embedding=embeddings)
 
+    st.write("📌 STEP 4-9: ベクターストアを検索するRetrieverの作成")
     # ベクターストアを検索するRetrieverの作成
     st.session_state.rag_retriever = db.as_retriever(search_type="mmr", search_kwargs={"k": 150, "lambda_mult": 0.3})
 
