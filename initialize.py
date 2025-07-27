@@ -129,7 +129,13 @@ def initialize_retriever():
 
     st.write("📌 STEP 4-5: 埋め込みモデルの用意")
     # 埋め込みモデルの用意
-    embeddings = OpenAIEmbeddings()
+    try:
+        embeddings = OpenAIEmbeddings()
+        st.write("✅ OpenAIEmbeddings 正常に生成されました")
+    except Exception as e:
+        st.error("❌ OpenAIEmbeddings の初期化に失敗しました")
+        st.error(str(e))
+        st.stop()
 
     # CSV由来のドキュメントと、それ以外のドキュメントを分類するt目に空リストを用意
     csv_docs = []
