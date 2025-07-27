@@ -155,9 +155,11 @@ def initialize_retriever():
     # チャンク分割を実施(CSV以外のドキュメント)
     splitted_other_docs = text_splitter.split_documents(other_docs)
 
+
     # 分割済みのドキュメントと、無加工のCSVドキュメントを結合して最終版とする
     final_docs = splitted_other_docs + csv_docs
 
+    st.write(f"✅ final_docs の件数: {len(final_docs)}")
     st.write("📌 STEP 4-8: ベクターストアの作成")
     # ベクターストアの作成
     db = Chroma.from_documents(final_docs, embedding=embeddings)
