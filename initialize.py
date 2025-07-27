@@ -174,7 +174,7 @@ def initialize_retriever():
         db = Chroma.from_documents(
             final_docs,
             embedding=embeddings,
-            client_settings=Settings(anonymized_telemetry=False, is_persist_directory=False),
+            client_settings=Settings(anonymized_telemetry=False)
         )
         st.write("✅ Chroma.from_documents 実行成功")
     except Exception as e:
