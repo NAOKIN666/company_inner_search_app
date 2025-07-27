@@ -18,6 +18,7 @@ from langchain_community.document_loaders import WebBaseLoader
 from langchain.text_splitter import CharacterTextSplitter
 from langchain_openai import OpenAIEmbeddings
 from langchain_community.vectorstores import Chroma
+from langchain.vectorstores import FAISS
 from chromadb.config import Settings
 import constants as ct
 
@@ -171,12 +172,11 @@ def initialize_retriever():
     st.write("📌 STEP 4-8: ベクターストアの作成")
     # ベクターストアの作成
     try:
-        db = Chroma.from_documents(
-            final_docs,
-            embedding=embeddings,
-            client_settings=Settings(anonymized_telemetry=False)
+        db = FAISS.from_documents(
+            documents=final_docs,
+            embedding=embeddings
         )
-        st.write("✅ Chroma.from_documents 実行成功")
+        st.write("✅ FAISS.from_documents 実行成功")
     except Exception as e:
         st.error("❌ ベクターストアの作成に失敗しました")
         st.error(str(e))  # ← エラー詳細を表示
@@ -184,7 +184,10 @@ def initialize_retriever():
 
     st.write("📌 STEP 4-9: ベクターストアを検索するRetrieverの作成")
     # ベクターストアを検索するRetrieverの作成
-    st.session_state.rag_retriever = db.as_retriever(search_type="mmr", search_kwargs={"k": ct.TOP_K, "lambda_mult": ct.LAMBDA_MULT})
+    st.session_state.rag_retriever = db.as_retriever(
+        search_type="mmr", 
+        search_kwargs={"k": ct.TOP_K, "lambda_mult": ct.LAMBDA_MULT}
+    )
 
 
 def initialize_session_state():
