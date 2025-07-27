@@ -11,7 +11,7 @@ from logging.handlers import TimedRotatingFileHandler
 from uuid import uuid4
 import sys
 import unicodedata
-from dotenv import load_dotenv
+# from dotenv import load_dotenv
 import streamlit as st
 from docx import Document
 from langchain_community.document_loaders import WebBaseLoader
@@ -21,12 +21,14 @@ from langchain_community.vectorstores import Chroma
 import constants as ct
 
 
+st.write("✅ initialize: スタート")
 ############################################################
 # 設定関連
 ############################################################
 # 「.env」ファイルで定義した環境変数の読み込み
-load_dotenv()
-
+# load_dotenv(
+st.write("📌 STEP 1: OpenAI APIキーを取得")
+OPENAI_API_KEY = st.secrets["OPENAI_API_KEY"]
 
 ############################################################
 # 関数定義
@@ -36,12 +38,16 @@ def initialize():
     """
     画面読み込み時に実行する初期化処理
     """
+    st.write("📌 STEP 2: ログ出力用にセッションIDを作成")
     # ログ出力用にセッションIDを生成
     initialize_session_id()
+    st.write("📌 STEP 3: ログ出力の設定")
     # ログ出力の設定
     initialize_logger()
+    st.write("📌 STEP 4: 検索器を作成")
     # RAGのRetrieverを作成
     initialize_retriever()
+    st.write("📌 STEP 5: 初期化データの用意")
     # 初期化データの用意
     initialize_session_state()
 
