@@ -18,6 +18,7 @@ from langchain_community.document_loaders import WebBaseLoader
 from langchain.text_splitter import CharacterTextSplitter
 from langchain_openai import OpenAIEmbeddings
 from langchain_community.vectorstores import Chroma
+from chromadb.config import Settings
 import constants as ct
 
 
@@ -152,8 +153,9 @@ def initialize_retriever():
 
     # チャンク分割用のオブジェクトを作成
     text_splitter = CharacterTextSplitter(
-        chunk_size=500,
-        chunk_overlap=50,
+        # レベル「易」問題２
+        chunk_size=ct.CHUNK_SIZE,
+        chunk_overlap=ct.CHUNK_OVERLAP,
         separator="\n"
     )
 
@@ -172,7 +174,7 @@ def initialize_retriever():
         db = Chroma.from_documents(
             final_docs,
             embedding=embeddings,
-            persist_directory="./tmp_chroma_test"  # 明示的に指定（任意）
+            client_settings=Settings(anonymized_telemetry=False, is_persist_directory=False),
         )
         st.write("✅ Chroma.from_documents 実行成功")
     except Exception as e:
@@ -182,7 +184,7 @@ def initialize_retriever():
 
     st.write("📌 STEP 4-9: ベクターストアを検索するRetrieverの作成")
     # ベクターストアを検索するRetrieverの作成
-    st.session_state.rag_retriever = db.as_retriever(search_type="mmr", search_kwargs={"k": 150, "lambda_mult": 0.3})
+    st.session_state.rag_retriever = db.as_retriever(search_type="mmr", search_kwargs={"k": ct.TOP_K, "lambda_mult": ct.LAMBDA_MULT})
 
 
 def initialize_session_state():
