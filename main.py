@@ -20,6 +20,7 @@ import components as cn
 # （自作）変数（定数）がまとめて定義・管理されているモジュール
 import constants as ct
 
+st.set_page_config(page_title=ct.APP_NAME)  # ← 必ず最初に書く
 
 ############################################################
 # 2. 設定関連
