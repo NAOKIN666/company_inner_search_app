@@ -28,9 +28,9 @@ from initialize import initialize
 # 2. 設定関連
 ############################################################
 # ブラウザタブの表示文言を設定
-st.set_page_config(
-    page_title=ct.APP_NAME
-)
+# st.set_page_config(
+#     page_title=ct.APP_NAME
+# )
 
 # ログ出力を行うためのロガーの設定
 logger = logging.getLogger(ct.LOGGER_NAME)
